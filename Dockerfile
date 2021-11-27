@@ -70,25 +70,25 @@ RUN wget -O linuxgsm.sh https://linuxgsm.sh && \
 	./ut99server auto-install
 
 # Expose ports
-EXPOSE 7777/tcp
-EXPOSE 7777/udp
-EXPOSE 7778/tcp
-EXPOSE 7778/udp
-EXPOSE 7779/tcp
-EXPOSE 7779/udp
-EXPOSE 8075/tcp
-EXPOSE 8075/udp
-EXPOSE 8076/tcp
-EXPOSE 8076/udp
-EXPOSE 8077/tcp
-EXPOSE 8077/udp
-EXPOSE 28900/tcp
-EXPOSE 28900/udp
-EXPOSE 28901/tcp
-EXPOSE 28901/udp
-EXPOSE 28902/tcp
-EXPOSE 28902/udp
-EXPOSE 8080/tcp
+EXPOSE 7777/tcp \
+       7777/udp \
+       7778/tcp \
+       7778/udp \
+       7779/tcp \
+       7779/udp \
+       8075/tcp \
+       8075/udp \
+       8076/tcp \
+       8076/udp \
+       8077/tcp \
+       8077/udp \
+       28900/tcp \
+       28900/udp \
+       28901/tcp \
+       28901/udp \
+       28902/tcp \
+       28902/udp \
+       8080/tcp
 
 USER root
 COPY --from=filebrowser_builder /usr/local/bin/filebrowser /filebrowser
@@ -96,8 +96,9 @@ RUN mkdir -p -m 777 /config
 COPY ./entrypoint.sh entrypoint.sh
 RUN chmod a+x entrypoint.sh && chown unreal:unreal entrypoint.sh
 USER unreal
-RUN pwd && whoami && ls -lah
 
 # Run the server
 CMD ["./ut99server", "start"]
 ENTRYPOINT ./entrypoint.sh
+
+#docker kill ut99-linuxgsm && docker system prune && docker rmi bymatej/ut99-linuxgsm:latest
