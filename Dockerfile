@@ -69,6 +69,14 @@ RUN wget -O linuxgsm.sh https://linuxgsm.sh && \
     chmod a+x ut99server && \
 	./ut99server auto-install
 
+# Install filebrowser
+USER root
+COPY --from=filebrowser_builder /usr/local/bin/filebrowser /filebrowser
+RUN mkdir -p -m 777 /config
+COPY ./entrypoint.sh entrypoint.sh
+RUN chmod a+x entrypoint.sh && chown unreal:unreal entrypoint.sh
+USER unreal
+
 # Expose ports
 EXPOSE 7777/tcp \
        7777/udp \
@@ -90,15 +98,7 @@ EXPOSE 7777/tcp \
        28902/udp \
        8080/tcp
 
-USER root
-COPY --from=filebrowser_builder /usr/local/bin/filebrowser /filebrowser
-RUN mkdir -p -m 777 /config
-COPY ./entrypoint.sh entrypoint.sh
-RUN chmod a+x entrypoint.sh && chown unreal:unreal entrypoint.sh
-USER unreal
-
-# Run the server
-CMD ["./ut99server", "start"]
+# Run LinuxGSM and FileBrowser
 ENTRYPOINT ./entrypoint.sh
 
 #docker kill ut99-linuxgsm && docker system prune && docker rmi bymatej/ut99-linuxgsm:latest
