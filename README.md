@@ -20,5 +20,34 @@ Things I wanted:
 - https://github.com/hurlenko/filebrowser-docker/
 
 ```
-docker build -t testing/server . 
+docker build -t bymatej/ut99-linuxgsm \
+  --build-arg USER_ID=$(id -u) \
+  --build-arg GROUP_ID=$(id -g) \
+  .
+```
+
+
+```
+docker run -d \
+  -p 7777:7777/tcp \
+  -p 7777:7777/udp \
+  -p 7778:7778/tcp \
+  -p 7778:7778/udp \
+  -p 7779:7779/tcp \
+  -p 7779:7779/udp \
+  -p 8075:8075/tcp \
+  -p 8075:8075/udp \
+  -p 8076:8076/tcp \
+  -p 8076:8076/udp \
+  -p 8077:8077/tcp \
+  -p 8077:8077/udp \
+  -p 28900:28900/tcp \
+  -p 28900:28900/udp \
+  -p 28901:28901/tcp \
+  -p 28901:28901/udp \
+  -p 28902:28902/tcp \
+  -p 28902:28902/udp \
+  -p 8080:8080 \
+  --name ut99-linuxgsm \
+  bymatej/ut99-linuxgsm:latest
 ```
