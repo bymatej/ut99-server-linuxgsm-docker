@@ -1,13 +1,14 @@
-FROM ubuntu:focal as builder
+FROM ubuntu:20.04 as filebrowser_builder
 
 RUN apt update && \
     apt install -y curl && \
     curl -fsSL https://raw.githubusercontent.com/filebrowser/get/master/get.sh --output get.sh && \
     chmod a+x ./get.sh && \
-    ./get.sh
+    ./get.sh && \
+    rm -rf /var/lib/apt/lists/*
 
 
-FROM ubuntu:focal
+FROM ubuntu:20.04
 
 # Arguments
 ARG DEBIAN_FRONTEND=noninteractive
@@ -40,19 +41,18 @@ RUN dpkg --add-architecture i386 && \
     			   netcat \
     			   lib32gcc1 \
     			   lib32stdc++6 && \
-    rm -rf /var/lib/apt/lists/*
-
-# Install Gamedig (optional): https://docs.linuxgsm.com/requirements/gamedig?_ga=2.245166405.1118399954.1637934271-78951660.1637934271
-RUN if [[ "$arg" = true ]] ; then \
+    rm -rf /var/lib/apt/lists/* && \
+    if [[ "$INSTALL_GAMEDIG" = true ]] ; then \
+        # Install Gamedig (optional): https://docs.linuxgsm.com/requirements/gamedig?_ga=2.245166405.1118399954.1637934271-78951660.1637934271
 		echo "Todo: install Gamedig" ; \
 	else \
 		echo "Gamedig will not be installed!" \
 	; fi
 
 # Define unreal user
-RUN addgroup --gid $GROUP_ID unreal
-RUN adduser --home /home/unreal/ --shell /bin/bash --disabled-password --gecos '' --uid $USER_ID --gid $GROUP_ID unreal
-RUN chown -R unreal /home/unreal && \
+RUN addgroup --gid $GROUP_ID unreal && \
+    adduser --home /home/unreal/ --shell /bin/bash --disabled-password --gecos '' --uid $USER_ID --gid $GROUP_ID unreal && \
+    chown -R unreal /home/unreal && \
 	chgrp -R unreal /home/unreal && \
     adduser unreal sudo && \
     echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
@@ -62,13 +62,11 @@ RUN mkdir -p /home/unreal/ut99/ && chown -R unreal /home/unreal/ut99 && chgrp -R
 # Define working directory
 WORKDIR /home/unreal/ut99
 
-# Download LinuxGSM for UT99
+# Download LinuxGSM for UT99 and install it
 RUN wget -O linuxgsm.sh https://linuxgsm.sh && \
 	chmod a+x linuxgsm.sh && \
-	bash linuxgsm.sh ut99server
-
-# Install LinuxGSM for UT99
-RUN chmod a+x ut99server && \
+	bash linuxgsm.sh ut99server && \
+    chmod a+x ut99server && \
 	./ut99server auto-install
 
 # Expose ports
@@ -93,7 +91,7 @@ EXPOSE 28902/udp
 EXPOSE 8080/tcp
 
 USER root
-COPY --from=builder /usr/local/bin/filebrowser /filebrowser
+COPY --from=filebrowser_builder /usr/local/bin/filebrowser /filebrowser
 RUN mkdir -p -m 777 /config
 COPY ./entrypoint.sh entrypoint.sh
 RUN chmod a+x entrypoint.sh && chown unreal:unreal entrypoint.sh
