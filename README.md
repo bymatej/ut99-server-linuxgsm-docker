@@ -19,6 +19,38 @@ Things I wanted:
 - https://tonyteaches.tech/filebrowser-tutorial/
 - https://github.com/hurlenko/filebrowser-docker/
 
+# Overview
+
+## This Docker image consists of the following:
+### Filebrowser
+A web based file browser that enables the file management of the files inside the container. 
+
+No volumes are used. This server was never intended to be used like a "real" server 
+(the one that you'd maintain and care about), but rather as a quick spin-up server.
+
+So, the need for a tool like filebrowser was to be able to quickly update the server details (name, number of players, etc.).
+
+I will add volumes in the future if I need them personally.
+
+- Filebrowser: https://filebrowser.org/
+
+### LinuxGSM
+This is a Game Server Management tool for linux. It is great, since it takes the hassle of dependencies installation 
+away from you. And also, Unreal Tournament 2000 was supported and updated to the latest version.
+
+- Linux GSM: https://linuxgsm.com/
+
+### Unreal Tournament 2000 server
+The UT99 game server updated to the lates patch 469 (by LinuxGSM) with its admin console.
+
+- Unreal Tournament 2000: https://unreal.fandom.com/wiki/Unreal_Tournament 
+- Patch v469: https://github.com/OldUnreal/UnrealTournamentPatches/releases/tag/v469b 
+- Community: https://ut99.org/
+
+# Installation
+
+## Building the image
+Run this command
 ```
 docker build -t bymatej/ut99-linuxgsm \
   --build-arg USER_ID=$(id -u) \
@@ -26,7 +58,9 @@ docker build -t bymatej/ut99-linuxgsm \
   .
 ```
 
+## Running the container
 
+Run this command
 ```
 docker run -d \
   -p 7777:7777/tcp \
@@ -51,3 +85,15 @@ docker run -d \
   --name ut99-linuxgsm \
   bymatej/ut99-linuxgsm:latest
 ```
+
+# ToDo
+## Introduce customization on docker run
+- Mods, maps, server name, etc.
+- kind of like on: https://github.com/bymatej/ut99-server but simpler
+
+## Introduce volumes
+- This way this server cannot be migrated and the content inside the container is dependant on that container
+- This is not how Docker should be used, but I just wanted it this way for now
+
+## Add more maps/mods by default
+- Monsterhunt, zeroping, mapvotela, etc.

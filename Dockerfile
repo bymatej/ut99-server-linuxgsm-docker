@@ -100,5 +100,3 @@ EXPOSE 7777/tcp \
 
 # Run LinuxGSM and FileBrowser
 ENTRYPOINT ./entrypoint.sh
-
-#docker kill ut99-linuxgsm && docker system prune && docker rmi bymatej/ut99-linuxgsm:latest
