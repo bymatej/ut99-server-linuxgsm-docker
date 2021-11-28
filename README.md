@@ -74,6 +74,15 @@ docker run -d \
   bymatej/ut99-linuxgsm:latest
 ```
 
+# Sources for maps, mods, game types and mutators
+- http://www.ut-files.com/
+- https://unrealarchive.org/
+- https://www.mapraider.com/maps/unreal-tournament
+- https://www.moddb.com/games/unreal-tournament
+- http://medor.no-ip.org/
+
+Filebrowser may come in handy when putting new maps/mods on the server. 
+
 # ToDo
 ## Introduce customization on docker run
 - Mods, maps, server name, etc.
