@@ -85,3 +85,5 @@ docker run -d \
 
 ## Add more maps/mods by default
 - Monsterhunt, zeroping, mapvotela, etc.
+
+## Remove unnecesarry ports (`EXPOSE` and `-p`)
