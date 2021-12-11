@@ -83,6 +83,14 @@ docker run -d \
 
 Filebrowser may come in handy when putting new maps/mods on the server. 
 
+## UMOD Extractor
+### Offline apps
+- https://www.acordero.org/projects/unreal-tournament-umod-extractor/
+- https://ut99.org/viewtopic.php?t=11471#p119216
+
+### Online (web) apps
+- https://fileproinfo.com/tools/viewer/umod#
+
 # ToDo
 ## Introduce customization on docker run
 - Mods, maps, server name, etc.
